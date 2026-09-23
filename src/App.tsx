@@ -9,6 +9,7 @@ import { CatalogPage } from "./pages/CatalogPage";
 import { LandingPage } from "./pages/LandingPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { BASE_URL } from "./utils/viteEnv";
 
 /**
  * Application shell (design "Application composition"): React Router above
@@ -23,10 +24,19 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
  * - `/catalogo` full catalog grid
  * - `/producto/:id` product detail
  * - `*` not-found
+ *
+ * The router basename comes from Vite's BASE_URL (build-time constant): the
+ * local dev server serves at "/", GitHub Pages at "/<repo>/" via BASE_PATH in
+ * the deploy workflow. React Router strips a trailing slash from basename, so
+ * only the assets and the initial pathname stay under the deploy subpath.
  */
+// React Router rejects a bare trailing-slash basename; normalize "/repo/" →
+// "/repo" while keeping the dev root as "/".
+const BASENAME = BASE_URL.length > 1 ? BASE_URL.replace(/\/$/, "") : BASE_URL;
+
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASENAME}>
       <CartProvider>
         <MotionConfig reducedMotion="user">
           <div className="flex min-h-screen flex-col bg-paper">
