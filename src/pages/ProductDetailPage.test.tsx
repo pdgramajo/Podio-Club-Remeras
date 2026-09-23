@@ -59,16 +59,24 @@ describe("ProductDetailPage (integration)", () => {
     expect(addControl).toBeDisabled();
     expect(screen.getByTestId("size-hint")).toHaveTextContent("Elegí un talle");
 
-    // Rich product head (site-seo): title, description, absolute first
-    // image and the route as og:url.
+    // Rich product head (site-seo "Rich product share tags"): both the og:
+    // and twitter: families are present in the rendered DOM, derived from
+    // the product — title = nombre, description = descripcion_corta, image =
+    // first image resolved to an absolute URL via resolveAssetUrl, url = the
+    // /producto/:id route.
     expect(document.title).toBe(product.nombre);
-    expect(screen.getByRole("button", { name: "Añadir al carrito" })).toBeInTheDocument();
-    const ogImage = document.head.querySelector('meta[property="og:image"]');
-    expect(ogImage?.getAttribute("content")).toBe(resolveAssetUrl(product.imagenes[0]));
-    const ogUrl = document.head.querySelector('meta[property="og:url"]');
-    expect(ogUrl?.getAttribute("content")).toBe("/producto/1");
-    const description = document.head.querySelector('meta[property="og:description"]');
-    expect(description?.getAttribute("content")).toBe(product.descripcion_corta);
+    const metaContent = (selector: string): string | null | undefined =>
+      document.head.querySelector(selector)?.getAttribute("content");
+    const firstImage = resolveAssetUrl(product.imagenes[0]);
+
+    expect(metaContent('meta[property="og:title"]')).toBe(product.nombre);
+    expect(metaContent('meta[property="og:description"]')).toBe(product.descripcion_corta);
+    expect(metaContent('meta[property="og:image"]')).toBe(firstImage);
+    expect(metaContent('meta[property="og:url"]')).toBe("/producto/1");
+
+    expect(metaContent('meta[name="twitter:title"]')).toBe(product.nombre);
+    expect(metaContent('meta[name="twitter:description"]')).toBe(product.descripcion_corta);
+    expect(metaContent('meta[name="twitter:image"]')).toBe(firstImage);
   });
 
   it("falls back to the not-found page with its own head for an unknown id", () => {
