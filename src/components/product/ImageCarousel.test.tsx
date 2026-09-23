@@ -46,7 +46,69 @@ describe("ImageCarousel", () => {
     );
   });
 
-  it("renders a single-image product without navigation or thumbnails, still zoomable", async () => {
+  it("pans a zoomed image by dragging, clamped to the frame edges, and resets pan on zoom change", async () => {
+    const user = userEvent.setup();
+    render(<ImageCarousel images={singleImage} alt="Camiseta de Arquero" />);
+
+    // Give the frame real dimensions so the clamp math works.
+    const frame = screen.getByTestId("carousel-frame");
+    frame.getBoundingClientRect = () =>
+      ({
+        width: 400,
+        height: 500,
+        top: 0,
+        left: 0,
+        right: 400,
+        bottom: 500,
+        x: 0,
+        y: 0,
+        toJSON: jest.fn(),
+      }) as DOMRect;
+
+    await user.click(screen.getByRole("button", { name: "Ampliar imagen" }));
+
+    // Drag a zoomed (1.6×) image. Max X = 400*0.6/2 = 120, max Y = 500*0.6/2 = 150.
+    const stage = screen.getByAltText("Camiseta de Arquero - foto 1");
+    fireEvent.pointerDown(stage, { pointerId: 1, clientX: 100, clientY: 100 });
+    fireEvent.pointerMove(stage, { pointerId: 1, clientX: 160, clientY: 130 });
+    fireEvent.pointerUp(stage, { pointerId: 1, clientX: 160, clientY: 130 });
+
+    const staged = screen.getByAltText("Camiseta de Arquero - foto 1").closest("[data-pan-x]")!;
+    expect(staged).toHaveAttribute("data-pan-x", "60");
+    expect(staged).toHaveAttribute("data-pan-y", "30");
+
+    // Overshooting clamps to the frame edge (max 120).
+    fireEvent.pointerDown(stage, { pointerId: 2, clientX: 0, clientY: 0 });
+    fireEvent.pointerMove(stage, { pointerId: 2, clientX: 500, clientY: 0 });
+    fireEvent.pointerUp(stage, { pointerId: 2, clientX: 500, clientY: 0 });
+
+    expect(staged).toHaveAttribute("data-pan-x", "120");
+
+    // Cycling zoom resets the pan to center.
+    await user.click(screen.getByRole("button", { name: "Ampliar más" }));
+    expect(staged).toHaveAttribute("data-pan-x", "0");
+    expect(staged).toHaveAttribute("data-pan-y", "0");
+  });
+
+  it("does not start a pan while the image is not zoomed", async () => {
+    const user = userEvent.setup();
+    render(<ImageCarousel images={singleImage} alt="Camiseta de Arquero" />);
+
+    const stage = screen.getByAltText("Camiseta de Arquero - foto 1");
+    fireEvent.pointerDown(stage, { pointerId: 1, clientX: 100, clientY: 100 });
+    fireEvent.pointerMove(stage, { pointerId: 1, clientX: 260, clientY: 200 });
+    fireEvent.pointerUp(stage, { pointerId: 1, clientX: 260, clientY: 200 });
+
+    const staged = screen.getByAltText("Camiseta de Arquero - foto 1").closest("[data-pan-x]")!;
+    expect(staged).toHaveAttribute("data-pan-x", "0");
+    expect(staged).toHaveAttribute("data-pan-y", "0");
+    expect(screen.queryByRole("button", { name: "Imagen anterior" })).not.toBeInTheDocument();
+    // Still usable on top of a non-zoomed image.
+    await user.click(screen.getByRole("button", { name: "Ampliar imagen" }));
+    expect(document.querySelector("[data-zoomed]")).not.toBeNull();
+  });
+
+  it("cycles through the three zoom levels and back on a single-image product", async () => {
     const user = userEvent.setup();
     render(<ImageCarousel images={singleImage} alt="Camiseta de Arquero" />);
 
@@ -55,14 +117,27 @@ describe("ImageCarousel", () => {
     expect(screen.queryByRole("button", { name: "Imagen anterior" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Ver foto/ })).not.toBeInTheDocument();
 
+    // Level 1: standard zoom (1.6×).
     const zoom = screen.getByRole("button", { name: "Ampliar imagen" });
     await user.click(zoom);
-    expect(screen.getByRole("button", { name: "Quitar zoom" })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: "Ampliar más" })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
+    expect(screen.getByRole("button", { name: "Ampliar más" })).toHaveTextContent("1.6×");
     expect(document.querySelector("[data-zoomed]")).not.toBeNull();
 
+    // Level 2: closer zoom (2.2×).
+    await user.click(screen.getByRole("button", { name: "Ampliar más" }));
+    expect(screen.getByRole("button", { name: "Ampliar más" })).toHaveTextContent("2.2×");
+    expect(document.querySelector("[data-zoomed]")).not.toBeNull();
+
+    // Level 3: strongest zoom (3×).
+    await user.click(screen.getByRole("button", { name: "Ampliar más" }));
+    expect(screen.getByRole("button", { name: "Quitar zoom" })).toHaveTextContent("3×");
+    expect(document.querySelector("[data-zoomed]")).not.toBeNull();
+
+    // Back to normal.
     await user.click(screen.getByRole("button", { name: "Quitar zoom" }));
     expect(screen.getByRole("button", { name: "Ampliar imagen" })).toHaveAttribute(
       "aria-pressed",

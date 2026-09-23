@@ -15,8 +15,10 @@ import { NotFoundPage } from "./NotFoundPage";
  * Product detail route `/producto/:id` (product-catalog spec). A known id
  * renders the long description, image carousel, size selector with adult and
  * kids groups, the formatted price, and an add-to-cart control that stays
- * disabled with a Spanish hint until a size is selected. An unknown or
- * invalid id falls back to the not-found page — never a crash (TM-1).
+ * disabled with a Spanish hint until a size is selected. Adding dispatches
+ * into the cart and shows the confirmation toast — it no longer opens the
+ * drawer (UX). An unknown or invalid id falls back to the not-found page —
+ * never a crash (TM-1).
  *
  * Head handling: the product head (name, short description, absolute first
  * image, current route) is installed for known ids. For unknown ids the
@@ -28,7 +30,7 @@ export function ProductDetailPage() {
   const { id } = useParams();
   const product = getProductById(Number(id));
   const [selectedSize, setSelectedSize] = useState<ProductSize | null>(null);
-  const { addItem, setOpen } = useCart();
+  const { addItem } = useCart();
   const { pathname } = useLocation();
 
   useDocumentHead(product !== undefined ? productHead(product, pathname) : NOT_FOUND_HEAD);
@@ -43,7 +45,6 @@ export function ProductDetailPage() {
       return;
     }
     addItem(product.id, product.nombre, size, product.precio);
-    setOpen(true);
   };
 
   return (
