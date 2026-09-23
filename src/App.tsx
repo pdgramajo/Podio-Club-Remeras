@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import { MotionConfig } from "motion/react";
+import { CartDrawer } from "./components/cart/CartDrawer";
 import { Header } from "./components/layout/Header";
 import { CartProvider } from "./context/CartContext";
 import { CatalogPage } from "./pages/CatalogPage";
@@ -9,8 +10,10 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 /**
  * Application shell (design "Application composition"): React Router above
  * the cart provider above the motion config — the providers that every page
- * needs. The header is rendered by every route; pages install their own head
- * data (site-seo "Per-route head management").
+ * needs. The header is rendered by every route and the cart drawer overlays
+ * the whole app (its own MotionConfig + AnimatePresence inherit
+ * reducedMotion="user" from here); pages install their own head data
+ * (site-seo "Per-route head management").
  *
  * Routes: `/` catalog, `/producto/:id` product detail, `*` not-found.
  */
@@ -26,6 +29,7 @@ function App() {
               <Route path="/producto/:id" element={<ProductDetailPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
+            <CartDrawer />
           </div>
         </MotionConfig>
       </CartProvider>
