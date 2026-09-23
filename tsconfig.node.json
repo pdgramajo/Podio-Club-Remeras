@@ -6,8 +6,12 @@
     "types": ["node"],
     "skipLibCheck": true,
 
-    /* Bundler mode */
-    "module": "nodenext",
+    /* Bundler mode: this package is CommonJS (Jest + ts-jest), so
+       module:nodenext would treat vite.config.ts as CJS and reject ESM
+       syntax; Vite loads its own config via esbuild regardless of the
+       package "type" field. */
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
