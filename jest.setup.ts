@@ -39,6 +39,32 @@ if (typeof window !== "undefined" && !window.requestAnimationFrame) {
   window.cancelAnimationFrame = (handle: number): void => window.clearTimeout(handle);
 }
 
+/*
+ * jsdom has no PointerEvent: fireEvent.pointerDown/Move/Up would create plain
+ * Events without clientX/pointerId, breaking pointer-capture logic (pan on
+ * zoomed images). A MouseEvent subclass keeps coordinates working exactly as
+ * the browser does.
+ */
+if (typeof window !== "undefined" && !window.PointerEvent) {
+  class PointerEventPolyfill extends MouseEvent {
+    readonly pointerId: number;
+    constructor(type: string, init: PointerEventInit = {}) {
+      super(type, init);
+      this.pointerId = init.pointerId ?? 0;
+    }
+  }
+  Object.defineProperty(window, "PointerEvent", {
+    writable: true,
+    value: PointerEventPolyfill,
+  });
+}
+
+if (typeof window !== "undefined" && !Element.prototype.setPointerCapture) {
+  Element.prototype.setPointerCapture = (): void => {};
+  Element.prototype.releasePointerCapture = (): void => {};
+  Element.prototype.hasPointerCapture = (): boolean => false;
+}
+
 if (typeof window !== "undefined" && !window.IntersectionObserver) {
   class IntersectionObserverStub implements IntersectionObserver {
     readonly root: Element | Document | null = null;
