@@ -34,3 +34,9 @@ export function productHead(product: Product, pathname: string): HeadData {
     url: pathname,
   };
 }
+
+export const LANDING_HEAD: HeadData = {
+  title: "Podio Club — Remeras con identidad",
+  description:
+    "Remeras de fútbol réplica para jugar y para alentar. Vestite distinto. Pedí por WhatsApp.",
+};
