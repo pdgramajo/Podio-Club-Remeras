@@ -1,14 +1,22 @@
 import "@testing-library/jest-dom";
 
 /**
- * jsdom (v20) does not implement matchMedia, IntersectionObserver or
- * requestAnimationFrame. motion's MotionConfig queries matchMedia, scroll
- * reveals use IntersectionObserver, and every animation drives rAF, so the
- * test environment stubs the three APIs. The stubs are inert: reduced-motion
- * resolves to "no-preference" (animations stay enabled in tests), and the
- * IO stub never fires, which keeps whileInView content rendered at its
- * initial styles — exactly as the DOM probes in the component tests expect.
+ * jsdom (v20) does not implement matchMedia, IntersectionObserver,
+ * requestAnimationFrame or TextEncoder/TextDecoder. motion's MotionConfig
+ * queries matchMedia, scroll reveals use IntersectionObserver, every
+ * animation drives rAF, and react-router v7 builds stream URLs with the
+ * encoders, so the test environment stubs all five APIs. The stubs are
+ * inert: reduced-motion resolves to "no-preference" (animations stay
+ * enabled in tests), and the IO stub never fires, which keeps whileInView
+ * content rendered at its initial styles — exactly as the DOM probes in the
+ * component tests expect.
  */
+if (typeof globalThis.TextEncoder === "undefined") {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { TextEncoder, TextDecoder } = require("util");
+  Object.assign(globalThis, { TextEncoder, TextDecoder });
+}
+
 if (typeof window !== "undefined" && !window.matchMedia) {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
