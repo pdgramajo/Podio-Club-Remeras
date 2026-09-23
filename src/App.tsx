@@ -1,13 +1,35 @@
-// Placeholder home (bootstrap shell, task 1.10). Router, providers, catalog
-// UI and motion arrive in PR 2; this shell proves the dev loop end-to-end.
+import { BrowserRouter, Route, Routes } from "react-router";
+import { MotionConfig } from "motion/react";
+import { Header } from "./components/layout/Header";
+import { CartProvider } from "./context/CartContext";
+import { CatalogPage } from "./pages/CatalogPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
+
+/**
+ * Application shell (design "Application composition"): React Router above
+ * the cart provider above the motion config — the providers that every page
+ * needs. The header is rendered by every route; pages install their own head
+ * data (site-seo "Per-route head management").
+ *
+ * Routes: `/` catalog, `/producto/:id` product detail, `*` not-found.
+ */
 function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="text-4xl font-extrabold tracking-tight text-podio-600">Podio Club</h1>
-      <p className="max-w-md text-lg text-ink/70">
-        Remeras de fútbol réplica para jugar y para alentar. El catálogo llega pronto.
-      </p>
-    </main>
+    <BrowserRouter>
+      <CartProvider>
+        <MotionConfig reducedMotion="user">
+          <div className="flex min-h-screen flex-col bg-paper">
+            <Header />
+            <Routes>
+              <Route path="/" element={<CatalogPage />} />
+              <Route path="/producto/:id" element={<ProductDetailPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </div>
+        </MotionConfig>
+      </CartProvider>
+    </BrowserRouter>
   );
 }
 
