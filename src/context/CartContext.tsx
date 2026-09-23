@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components -- the useCart hook must
+   stay in the same module as the context it reads; splitting it out would force
+   a second context module for zero benefit (design "Component/state structure"). */
 import { createContext, useContext, useMemo, useReducer, type ReactNode } from "react";
 import { cartReducer, initialCartState } from "../state/cartReducer";
 import type { CartLine } from "../types/product";
