@@ -24,8 +24,9 @@ function CartProbe() {
 
 function DrawerHarness() {
   const { addItem, setOpen } = useCart();
-  // Mirrors the real add-to-cart flow (ProductDetailPage): add the item, then
-  // open the drawer via the shared open flag.
+  // The real add-to-cart flow (ProductDetailPage) no longer opens the drawer —
+  // it shows a confirmation toast instead. This harness opens the drawer
+  // explicitly so the drawer can be tested on its own.
   const addAndOpen = (productId: number, name: string, size: string, unitPrice: number): void => {
     addItem(productId, name, size, unitPrice);
     setOpen(true);

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router";
+import { AddToCartToast } from "../components/cart/AddToCartToast";
 import { CartProvider, useCart } from "../context/CartContext";
 import { products } from "../data/products";
 import { NOT_FOUND_HEAD } from "../hooks/headData";
@@ -25,6 +26,7 @@ function renderDetail(initialEntry: string) {
     <MemoryRouter initialEntries={[initialEntry]}>
       <CartProvider>
         <CartProbe />
+        <AddToCartToast />
         <Routes>
           <Route path="/producto/:id" element={<ProductDetailPage />} />
         </Routes>
@@ -105,7 +107,7 @@ describe("ProductDetailPage (integration)", () => {
     expect(screen.getByTestId("size-hint")).toBeInTheDocument();
   });
 
-  it("adds the product with the selected size and opens the cart", async () => {
+  it("muestra el toast sin abrir el drawer al agregar", async () => {
     const user = userEvent.setup();
     renderDetail("/producto/1");
 
@@ -125,6 +127,11 @@ describe("ProductDetailPage (integration)", () => {
       quantity: 1,
     };
     expect(screen.getByTestId("probe-lines").textContent).toBe(JSON.stringify([expectedLine]));
-    expect(screen.getByTestId("probe-open").textContent).toBe("true");
+    // The drawer stays closed; the small confirmation toast confirms the add
+    // instead (top-center pill, text-only).
+    expect(screen.getByTestId("probe-open").textContent).toBe("false");
+    const toast = screen.getByTestId("add-toast");
+    expect(toast).toBeInTheDocument();
+    expect(toast).toHaveTextContent("Agregado al carrito");
   });
 });
