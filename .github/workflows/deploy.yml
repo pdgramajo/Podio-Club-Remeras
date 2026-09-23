@@ -1,0 +1,81 @@
+# GitHub Pages deploy pipeline (ci-deployment spec, design decision "GH Pages
+# base path + SPA 404 fallback"). Git-driven: a green push to `main` rebuilds
+# and redeploys the site; rollback is `git revert` (the pipeline redeploys the
+# previous green build automatically).
+#
+# One-time manual setup (repository owner):
+#   Settings -> Pages -> Source: "GitHub Actions"
+# Then the first push to main deploys the site.
+#
+# The asset base path is derived at build time from the repository name
+# (BASE_PATH=/<repo>/) so assets resolve under the Pages subpath without
+# hardcoding a repo name (design anti-hardcode decision). No git pushes and no
+# secrets are involved — Pages deploys exclusively through the official
+# upload-pages-artifact / deploy-pages actions.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: "Setup Node (pinned to engines: 22)"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
+      # Fail-closed artifact gate (TM-1 + TM-2): a broken build — missing
+      # 404 fallback, missing assets, or a shell/index mismatch — stops the
+      # job before anything reaches Pages.
+      - name: Verify artifact
+        run: |
+          test -f dist/index.html
+          test -f dist/404.html
+          cmp -s dist/index.html dist/404.html
+          test -d dist/assets
+          test -n "$(ls -A dist/assets)"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
