@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "nombre": "Camiseta Titular Celeste 2024",
+    "descripcion_corta": "Réplica local con cuello redondo y escudo bordado.",
+    "descripcion_larga": "Réplica de la camiseta titular 2024: tejido dry-fit que se seca rápido, escudo bordado al pecho, costuras reforzadas y corte cómodo para jugar o alentar.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": true,
+    "tipo": "jugador",
+    "imagenes": [
+      "/images/products/1-1.jpg",
+      "/images/products/1-2.jpg",
+      "/images/products/1-3.jpg"
+    ],
+    "precio": 45000,
+    "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-6", "NIÑO-8"]
+  },
+  {
+    "id": 2,
+    "nombre": "Camiseta Suplente Blanca 2024",
+    "descripcion_corta": "Alternativa blanca con detalles en gris.",
+    "descripcion_larga": "Camiseta suplente 2024 en blanco con detalles tonales en gris, dry-fit transpirable y numeración estampada lista para personalizar.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": 10,
+    "tipo": "jugador",
+    "imagenes": ["/images/products/2-1.jpg", "/images/products/2-2.jpg"],
+    "precio": 45000,
+    "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-6", "NIÑO-8"]
+  },
+  {
+    "id": 3,
+    "nombre": "Camiseta Titular Roja 2024",
+    "descripcion_corta": "Ícono clásico en rojo pasión.",
+    "descripcion_larga": "La clásica roja para la tribuna: corte holgado, tela suave al tacto y estampa del escudo en frontal. Ideal para ir a la cancha.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": false,
+    "tipo": "hincha",
+    "imagenes": ["/images/products/3-1.jpg", "/images/products/3-2.jpg"],
+    "precio": 40000,
+    "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-6"]
+  },
+  {
+    "id": 4,
+    "nombre": "Camiseta Suplente Azul 2024",
+    "descripcion_corta": "Alternativa azul noche para hinchas.",
+    "descripcion_larga": "Camiseta de hincha azul noche con dobladillo reforzado y tela que no se transparenta. Un básico para la semana y la cancha.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": true,
+    "tipo": "hincha",
+    "imagenes": [
+      "/images/products/4-1.jpg",
+      "/images/products/4-2.jpg",
+      "/images/products/4-3.jpg"
+    ],
+    "precio": 40000,
+    "talles": ["S", "M", "L", "XL", "XXL"]
+  },
+  {
+    "id": 5,
+    "nombre": "Camiseta de Arquero Verde 2024",
+    "descripcion_corta": "Modelo de arquero, colores vibrantes.",
+    "descripcion_larga": "Camiseta de arquero 2024 en verde brillante con inserciones de malla en los laterales para máxima ventilación. Talle amplio para usar sobre deportiva.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": 1,
+    "tipo": "jugador",
+    "imagenes": ["/images/products/5-1.jpg", "/images/products/5-2.jpg"],
+    "precio": 48000,
+    "talles": ["M", "L", "XL", "NIÑO-8", "NIÑO-10"]
+  },
+  {
+    "id": 6,
+    "nombre": "Camiseta Titular Blanca con Dorado 2024",
+    "descripcion_corta": "Blanca elegante con detalles dorados.",
+    "descripcion_larga": "Edición titular en blanco con detalles dorados en cuello y mangas. Tejido liviano, secado rápido y terminaciones premium.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": 7,
+    "tipo": "jugador",
+    "imagenes": [
+      "/images/products/6-1.jpg",
+      "/images/products/6-2.jpg",
+      "/images/products/6-3.jpg"
+    ],
+    "precio": 46000,
+    "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-6", "NIÑO-8", "NIÑO-10", "NIÑO-12"]
+  },
+  {
+    "id": 7,
+    "nombre": "Camiseta Suplente Bordó 2024",
+    "descripcion_corta": "Bordó sobrio con cuello en V.",
+    "descripcion_larga": "Camiseta de hincha bordó con cuello en V y terminación reforzada. Colores intensos que no destiñen al lavado.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": false,
+    "tipo": "hincha",
+    "imagenes": ["/images/products/7-1.jpg", "/images/products/7-2.jpg"],
+    "precio": 39000,
+    "talles": ["S", "M", "L", "XL", "XXL"]
+  },
+  {
+    "id": 8,
+    "nombre": "Camiseta Titular Amarilla 2024",
+    "descripcion_corta": "Amarilla que se ve de lejos.",
+    "descripcion_larga": "Titular amarilla con mangas contrastantes, ideal para partidos bajo el sol. Corte atlético y costuras planas anti-rozadura.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": true,
+    "tipo": "jugador",
+    "imagenes": ["/images/products/8-1.jpg", "/images/products/8-2.jpg"],
+    "precio": 47000,
+    "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-6", "NIÑO-8", "NIÑO-10", "NIÑO-12"]
+  },
+  {
+    "id": 9,
+    "nombre": "Camiseta Suplente Gris 2024",
+    "descripcion_corta": "Gris urbano, diseño minimalista.",
+    "descripcion_larga": "Alternativa gris con estética minimalista: sin estampados llamativos, tela suave y durabilidad pensada para uso diario.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": 9,
+    "tipo": "hincha",
+    "imagenes": [
+      "/images/products/9-1.jpg",
+      "/images/products/9-2.jpg",
+      "/images/products/9-3.jpg"
+    ],
+    "precio": 38000,
+    "talles": ["M", "L", "XL", "XXL"]
+  },
+  {
+    "id": 10,
+    "nombre": "Camiseta Titular Naranja 2024",
+    "descripcion_corta": "Naranja vibrante, edición limitada.",
+    "descripcion_larga": "Edición limitada en naranja vibrante con cuello redondo y escudo bordado. Stock chico: cuando se termina, no se repone.",
+    "tipo_tela": "dry-fit",
+    "numero_espalda": false,
+    "tipo": "jugador",
+    "imagenes": ["/images/products/10-1.jpg", "/images/products/10-2.jpg"],
+    "precio": 45000,
+    "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-8", "NIÑO-10"]
+  }
+]
