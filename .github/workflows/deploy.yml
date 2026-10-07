@@ -47,7 +47,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          BASE_PATH: /${{ github.event.repository.name }}/
+          BASE_PATH: /
 
       # Fail-closed artifact gate (TM-1 + TM-2): a broken build — missing
       # 404 fallback, missing assets, or a shell/index mismatch — stops the
