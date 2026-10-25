@@ -153,5 +153,24 @@
     ],
     "precio": 45000,
     "talles": ["S", "M", "L", "XL", "XXL", "NIÑO-8", "NIÑO-10"]
+  },
+  {
+    "id": 11,
+    "nombre": "Camiseta Aston Villa 2026/2027 | Versión Jugador",
+    "descripcion_corta": "Camiseta Aston Villa 2026/2027 | Versión Jugador, sin dorsal, talle XL.",
+    "descripcion_larga": "Camiseta Aston Villa temporada 2026/2027, versión jugador, con diseño inspirado en los colores del club. Modelo sin dorsal, talle XL, ideal para los fanáticos que buscan lucir los colores de su equipo.",
+    "tipo_tela": "tejido deportivo de secado rápido",
+    "numero_espalda": false,
+    "tipo": "jugador",
+    "imagenes": [
+      "/images/products/astonvilla/avilla-1.webp",
+      "/images/products/astonvilla/avilla-2.webp",
+      "/images/products/astonvilla/avilla-3.webp",
+      "/images/products/astonvilla/avilla-4.webp",
+      "/images/products/astonvilla/avilla-5.webp",
+      "/images/products/astonvilla/avilla-6.webp"
+    ],
+    "precio": 60000,
+    "talles": ["XL"]
   }
 ]
