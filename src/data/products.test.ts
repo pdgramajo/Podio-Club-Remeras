@@ -133,10 +133,10 @@ describe("validateProducts", () => {
 });
 
 describe("the bundled products datasource", () => {
-  it("exposes all 10 seeded products with unique ids", () => {
-    expect(products).toHaveLength(10);
+  it("exposes all 11 seeded products with unique ids", () => {
+    expect(products).toHaveLength(11);
     const ids = products.map((p) => p.id);
-    expect(new Set(ids).size).toBe(10);
+    expect(new Set(ids).size).toBe(11);
     for (const product of products) {
       expect(product.nombre.length).toBeGreaterThan(0);
       expect(product.imagenes.length).toBeGreaterThan(0);
