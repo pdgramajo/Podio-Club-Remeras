@@ -3,6 +3,9 @@
 # and redeploys the site; rollback is `git revert` (the pipeline redeploys the
 # previous green build automatically).
 #
+# PRs run the build job as a required validation check; only pushes to `main`
+# and manual dispatches deploy to Pages.
+#
 # One-time manual setup (repository owner):
 #   Settings -> Pages -> Source: "GitHub Actions"
 # Then the first push to main deploys the site.
@@ -17,6 +20,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -66,6 +71,7 @@ jobs:
           path: dist
 
   deploy:
+    if: ${{ github.event_name != 'pull_request' }}
     needs: build
     runs-on: ubuntu-latest
     permissions:
