@@ -37,7 +37,7 @@ const mockProducts = productData as typeof productData & {
   __setProducts: (items: Product[]) => void;
 };
 
-/** The validated 10-product catalog as authored — captured before any mutation. */
+/** The validated 11-product catalog as authored — captured before any mutation. */
 const realCatalog: Product[] = productData.products;
 
 function renderCatalogRoute() {
@@ -62,8 +62,8 @@ describe("CatalogPage (integration)", () => {
     renderCatalogRoute();
 
     const cards = screen.getAllByTestId("product-card");
-    expect(cards).toHaveLength(10);
-    expect(realCatalog).toHaveLength(10);
+    expect(cards).toHaveLength(11);
+    expect(realCatalog).toHaveLength(11);
 
     for (const product of realCatalog) {
       const card = cards[realCatalog.indexOf(product)];
